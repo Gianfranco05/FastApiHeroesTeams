@@ -1,0 +1,62 @@
+# Base URL
+@baseUrl = http://localhost:8000
+
+# -------------------------------------------------
+# 2. LISTAR WEAPONS (SIN PARAMETROS)
+# -------------------------------------------------
+# Devuelve los primeros 10 registros por defecto
+
+### Listar weapons
+GET {{baseUrl}}/weapons
+
+
+# -------------------------------------------------
+# 3. PAGINACION BASICA
+# -------------------------------------------------
+# offset = registros a saltar
+# limit = cantidad de registros a devolver
+
+### Pagina 1
+GET {{baseUrl}}/weapons?offset=0&limit=2
+
+### Pagina 2
+GET {{baseUrl}}/weapons?offset=2&limit=2
+
+### Pagina 3
+GET {{baseUrl}}/weapons?offset=4&limit=2
+
+
+# -------------------------------------------------
+# 4. FILTRO DINAMICO POR NOMBRE
+# -------------------------------------------------
+# Busca weapons cuyo nombre contenga el texto indicado
+
+### Buscar armas con "espada"
+GET {{baseUrl}}/weapons?name=espada
+
+### Buscar armas con "arco"
+GET {{baseUrl}}/weapons?name=arco
+
+
+# -------------------------------------------------
+# 5. FILTRO + PAGINACION
+# -------------------------------------------------
+# Combina búsqueda y paginación
+
+### Buscar "espada" con paginacion
+GET {{baseUrl}}/weapons?name=espada&offset=0&limit=1
+
+### Siguiente pagina del filtro
+GET {{baseUrl}}/weapons?name=espada&offset=1&limit=1
+
+
+# -------------------------------------------------
+# 9. PRUEBAS DE VALIDACION (FASTAPI + QUERY)
+# -------------------------------------------------
+# Estos endpoints deberían devolver error 422
+
+### Offset invalido (menor que 0)
+GET {{baseUrl}}/weapons?offset=-1
+
+### Limit invalido (mayor a 100)
+GET {{baseUrl}}/weapons?limit=200

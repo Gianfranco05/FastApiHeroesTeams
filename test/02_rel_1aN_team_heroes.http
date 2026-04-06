@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:8000
+@json = application/json
+
+### Health DB
+GET {{baseUrl}}/health/db
+
+################################################################################
+# 1:N TEAM → HEROES (Hero.team_id)
+################################################################################
+
+### Crear Team Avengers
+POST {{baseUrl}}/teams
+Content-Type: {{json}}
+
+{
+  "name": "Avengers",
+  "headquarters": "Stark Tower"
+}
+
+### Crear Hero Steve (sin team)
+POST {{baseUrl}}/heroes
+Content-Type: {{json}}
+
+{
+  "name": "Captain America",
+  "secret_name": "Steve Rogers",
+  "age": 105
+}
+
+### Asignar Hero 2 al Team 1 (1:N)
+PATCH {{baseUrl}}/heroes/2
+Content-Type: {{json}}
+
+{
+  "team_id": 1
+}
+
+### Ver Team 1 (debe traer heroes[])
+GET {{baseUrl}}/teams/1
+
+### Mover Hero 2 a otro team (creamos uno)
+POST {{baseUrl}}/teams
+Content-Type: {{json}}
+
+{
+  "name": "Guardians",
+  "headquarters": "Knowhere"
+}
+
+### Cambiar team_id de Hero 2 a Team 2
+PATCH {{baseUrl}}/heroes/2
+Content-Type: {{json}}
+
+{
+  "team_id": 2
+}
+
+### Ver Team 1 (Hero 2 ya no debería estar)
+GET {{baseUrl}}/teams/1
+
+### Ver Team 2 (Hero 2 debería estar)
+GET {{baseUrl}}/teams/2

@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:8000
+@json = application/json
+
+### Health DB
+GET {{baseUrl}}/health/db
+
+################################################################################
+# 1:1 HERO ↔ WEAPON
+################################################################################
+
+### Crear Weapon 1
+POST {{baseUrl}}/weapons
+Content-Type: {{json}}
+
+{
+  "name": "Mjolnir",
+  "description": "Martillo legendario"
+}
+
+### Crear Weapon 2
+POST {{baseUrl}}/weapons
+Content-Type: {{json}}
+
+{
+  "name": "Shield",
+  "description": "Escudo indestructible"
+}
+
+### Listar Weapons
+GET {{baseUrl}}/weapons
+
+### Crear Hero Thor (sin weapon)
+POST {{baseUrl}}/heroes
+Content-Type: {{json}}
+
+{
+  "name": "Thor",
+  "secret_name": "Thor Odinson",
+  "age": 1500
+}
+
+### Asignar Weapon 1 a Hero 1 (1:1)
+PATCH {{baseUrl}}/heroes/1
+Content-Type: {{json}}
+
+{
+  "weapon_id": 1
+}
+
+### Ver Hero 1 completo (debe traer weapon)
+GET {{baseUrl}}/heroes/1
+
+### Cambiar Weapon (opcional)
+PATCH {{baseUrl}}/heroes/1
+Content-Type: {{json}}
+
+{
+  "weapon_id": 2
+}
+
+### Ver Hero 1 completo
+GET {{baseUrl}}/heroes/1

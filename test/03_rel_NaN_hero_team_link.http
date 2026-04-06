@@ -1,0 +1,75 @@
+@baseUrl = http://localhost:8000
+@json = application/json
+
+### Health DB
+GET {{baseUrl}}/health/db
+
+################################################################################
+# N:M HERO ↔ TEAM via hero_team_link
+################################################################################
+
+### Asegurar que existan 2 teams (si ya existen, omití)
+POST {{baseUrl}}/teams
+Content-Type: {{json}}
+
+{
+  "name": "Team A",
+  "headquarters": "HQ A"
+}
+
+### Crear Team B
+POST {{baseUrl}}/teams
+Content-Type: {{json}}
+
+{
+  "name": "Team B",
+  "headquarters": "HQ B"
+}
+
+### Crear Hero (si ya existe, omití)
+POST {{baseUrl}}/heroes
+Content-Type: {{json}}
+
+{
+  "name": "Spider-Man",
+  "secret_name": "Peter Parker",
+  "age": 18
+}
+
+### Link Hero 3 con Team 1 (N:M)
+POST {{baseUrl}}/heroes/3/teams
+Content-Type: {{json}}
+
+{
+  "team_id": 1
+}
+
+### Link Hero 3 con Team 2 (N:M)
+POST {{baseUrl}}/heroes/3/teams
+Content-Type: {{json}}
+
+{
+  "team_id": 2
+}
+
+### Ver Hero 3 (debe traer teams[])
+GET {{baseUrl}}/heroes/3
+
+### Ver Teams de Hero 3
+GET {{baseUrl}}/heroes/3/teams
+
+### Unlink Hero 3 del Team 2
+DELETE {{baseUrl}}/heroes/3/teams/2
+
+### Ver Hero 3 (debe quedar solo Team 1 en teams[])
+GET {{baseUrl}}/heroes/3
+
+################################################################################
+# Probar CASCADE (opcional)
+################################################################################
+
+### Borrar Team 1 (debe borrar links)
+DELETE {{baseUrl}}/teams/1
+
+### Ver Hero 3 (ya no debería tener Team 1 en teams[])
+GET {{baseUrl}}/heroes/3
